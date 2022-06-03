@@ -1,0 +1,13 @@
+.centered-dashboard {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -500px;
+	margin-left: -100px;
+}
+
+.logout-button {
+	position: absolute;
+	top: -80px;
+	right: -500px;
+}
