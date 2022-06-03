@@ -1,70 +1,13 @@
-# Getting Started with Create React App
+This app will let a user login using Facebook Login API, post and schedule a post to user's Facebook Pages or Group
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+App.js contains 2 main components that are Dashboard and Login. 
 
-## Available Scripts
+Login component import FacebookLogin from 'react-facebook-login' which is a Facebook Login npm package created for React. This FacebookLogin function takes in the Facebook App Id as a prop that can be obtained after we have created an app on https://developers.facebook.com/. FacebookLogin also has other important props such as autoLoad, fields, and callback. The autoLoad prop can be set to true so that the application automatically login the users once they have granted access the first time, or false to prevent the application from automatically logging the users in. The fields prop takes in a string of data we want to get from Facebook API such as users' name, profile picture, birthday, hometown and number of friends. These parameters can be obtained using Facebook Graph Exploer on https://developers.facebook.com/. The callback props will pass in the function responseFacebook in App.js file and get the data (mentioned above) that is returned from Facebook Server. We can then save these data as states in our application.
 
-In the project directory, you can run:
+Once we have the users' name, profile picture, birthday, hometown, and numbers of friends, we can then pass them in as props into the Dashboard component. The Dashboard component will render user's ProfileCard, a LogoutButton, and a PostComment component that is in charge of taking user's input and posting comments. 
 
-### `npm start`
+The PostComment component's most important feature is that it lets us pick between posting to page or group. If the page button is clicked, it will set pageActive to true, and groupActive to false and passing these value to the onCommentSubmit function in Dashboard.js file when the Submit button is clicked. If the user wish to schedule a post at a specific time, he/she can do so using the Schedule button. This scheduling function will take the user date and time selection as input and return a date object. Then using these values, onCommentSubmit function will make an API request accordingly. However, we must first convert the date object that we receive from the user's selection and convert it to unix timestamp, because Facebook Post API requires a scheduled_publish_time parameter with a value in unix timestamp format, and published parameter set to 'false'. Note that to post or to schedule a post we must have a message paramter and an access_token parameter. The message parameter is simply the comment that the user would like to post, and the access_token parameter is our API access token which could be obtained using Facebook Graph Explorer. By default, access token expires in a very short period of time (a day or so), we need to extend this access token to get a long lived token by using Facebook Graph Explorer. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+A few important keys:
+_We can post and schedule a post to a Page, and we can only post to a Group, but not schedule a post using Facebook API.
+_scheduled_publish_time needs a unix timestamp as its value.
